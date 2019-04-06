@@ -16,7 +16,6 @@
     margin-bottom: 20px;
     font: 20px/1.5 sans-serif;
   }
-
 /*
   .terminal {
     float: left;
@@ -43,7 +42,8 @@
     color:#eeeeee
   }
 </style>
-<script src="term.js"></script>
+<link rel="stylesheet" href="xterm.css" />
+<script src="xterm.js"></script>
 <script src="FileSaver.js"></script>
 </head>
 <body>
@@ -109,7 +109,8 @@ var get_file_data = null;
 
 function calculate_size(win) {
     var cols = Math.max(80, Math.min(150, (win.innerWidth - 280) / 7)) | 0;
-    var rows = Math.max(24, Math.min(80, (win.innerHeight - 180) / 12)) | 0;
+    var rows = Math.max(24, Math.min(100, (win.innerHeight - 280) / 12)) | 0;
+    console.log(cols, rows);
     return [cols, rows];
 }
 
@@ -123,9 +124,11 @@ function calculate_size(win) {
       term = new Terminal({
         cols: size[0],
         rows: size[1],
+        fontSize: 12,
+        scrollback: 10000,
         useStyle: true,
         screenKeys: true,
-        cursorBlink: false
+        cursorBlink: true
       });
       term.open(document.getElementById("term"));
       show_https_warning();
@@ -181,7 +184,7 @@ function connect(url) {
     ws.onopen = function() {
         update_reboot_status('connected');
         get_ver();
-        term.removeAllListeners('data');
+        // term.removeAllListeners('data');
         term.on('data', function(data) {
             // Pasted data from clipboard will likely contain
             // LF as EOL chars.
