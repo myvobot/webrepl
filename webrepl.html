@@ -59,6 +59,15 @@
     <strong>Send a file</strong>
     <input type="file" id="put-file-select" />
     <div id="put-file-list"></div>
+
+    <label for="dest-path-select">Destination path:</label>
+    <select id="dest-path-select">
+        <option value="app/">app/</option>
+        <option value="conf/">conf/</option>
+        <option value="res/">res/</option>
+        <option value="">/</option>
+    </select>
+    <br/>
     <input type="button" value="Send to device" id="put-file-button" onclick="put_file(); return false;" />
   </div>
 
@@ -272,7 +281,9 @@ function decode_resp(data) {
 }
 
 function put_file() {
-    var dest_fname = put_file_name;
+    var dest = document.getElementById("dest-path-select");
+    var dest_path = dest.options[dest.selectedIndex].value;
+    var dest_fname = dest_path + put_file_name;
     var dest_fsize = put_file_data.length;
 
     // WEBREPL_FILE = "<2sBBQLH64s"

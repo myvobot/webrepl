@@ -240,7 +240,8 @@ def main():
 
     ws = websocket(s)
 
-    login(ws, passwd)
+    if passwd != '_SKIP_PWD':
+        login(ws, passwd)
     print("Remote WebREPL version:", get_ver(ws))
 
     # Set websocket to send data marked as "binary"
